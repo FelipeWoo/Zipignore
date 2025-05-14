@@ -35,8 +35,8 @@ def load_ignore_patterns():
     if Path(IGNORE_FILE).exists():
         with open(IGNORE_FILE, "r") as file:
             for line in file:
-                line = line.strip()
-                if line and not line.startswith("#"):
+                line = line.split("#", 1)[0].strip()
+                if line:
                     patterns.add(line)
     return patterns
 
