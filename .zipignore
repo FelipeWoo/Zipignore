@@ -1,0 +1,60 @@
+# ─────────────────────────────────────────────────────────────
+# .zipignore - Template for excluding files from zipignore
+# Inspired by .gitignore, but tailored for archive creation
+# ─────────────────────────────────────────────────────────────
+
+# ── Metadata / control files
+.zipignore         # This file itself
+.last_zipignore    # Record of last generated archive
+*.zip              # Do not include previously zipped files
+
+# ── Project code exclusions
+zipignore.py       # Core script (if distributing separately)
+
+# ── Logs ( Commented out if you want logs ignored)
+# *.log
+# logs/
+
+# ── Python cache & env
+__pycache__/
+*.py[cod]
+.python-version
+*.pyo
+*.pyd
+
+# ── Sensitive or environment-specific files
+.env
+.env.*
+
+# ── Virtual environments (local or containerized)
+.venv/
+env/
+venv/
+
+.venv
+.venv*
+
+# ── NodeJS packages
+node_modules/
+
+# ── Editor & IDE configs
+.vscode/
+.idea/
+
+# ── Test reports & build artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+build/
+dist/
+*.egg-info/
+
+# ── Databases / generated files
+*.db
+*.sqlite3
+
+
+# ── OS/system files
+.DS_Store
+Thumbs.db
