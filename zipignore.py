@@ -12,12 +12,13 @@ from tqdm import tqdm
 
 def sanitize_filename(filename: str) -> str:
     logger.debug("Sanitizing and converting to lower case ...")
-    # Make all lower case
+    # make all characters lowercase
     filename = filename.lower()
-    # Replace symbols for "_" to universal integration
+    # replace invalid symbols whit "_" for cross-platform compatibility
     return re.sub(r'[\\/*?:"<>|]', "_", filename)
 
 def get_default_zip_name(base_folder="."):
+    # generate a sanitized and timestamped zip filename based on the current folder name
     logger.debug("Preparing the file name ...")
     folder_name = Path(base_folder).resolve().name
     folder_name = sanitize_filename(folder_name)
@@ -29,9 +30,10 @@ IGNORE_FILE = ".zipignore"
 ZIP_NAME = get_default_zip_name()
 
 def load_ignore_patterns():
+    # load ignore patterns from .zipignore, removing inline and full-line comments
     logger.debug("Loading the patterns to ignore ...")
     patterns = set()
-
+    # loads all lines in file splitting comments starting with # or containing # next-to
     if Path(IGNORE_FILE).exists():
         with open(IGNORE_FILE, "r") as file:
             for line in file:
@@ -42,14 +44,17 @@ def load_ignore_patterns():
 
 
 def should_ignore(path: str, patterns: set) -> bool:
-    path_parts = Path(path).parts  # divide the path
+    # split the relative path into parts for granular pattern matching
+    path_parts = Path(path).parts
+    # check if ignore or not based on the loaded patterns from .zipignore
     for pattern in patterns:
+        # check if the full path matches any ignore pattern
         if fnmatch(path, pattern):
             return True
-        # compares part with pattern
+        # check if any part of the path matches a pattern (e.g., subfolders or files)
         if any(fnmatch(part, pattern) for part in path_parts):
             return True
-        # if path begins or ends with /
+        # check if the path starts with an ignored directory pattern
         if pattern.endswith("/") and str(Path(path)).startswith(pattern.rstrip("/")):
             return True
     return False
@@ -58,10 +63,11 @@ def should_ignore(path: str, patterns: set) -> bool:
 
 
 def zip_project(base_folder="."):
+    
     logger.info("Preparing to zip files ...")
     patterns = load_ignore_patterns()
 
-    # Recolectar todos los archivos primero
+    # collect all files in base_folder recursively (before filtering)
     file_list = []
     for root, _, files in os.walk(base_folder):
         for file in files:
@@ -78,16 +84,18 @@ def zip_project(base_folder="."):
     tqdm.write(f"Total files to check before filtering: {total_files}")
 
     with zipfile.ZipFile(ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zipf:
+        # create a tqdm progress bar for all scanned files
         for full_path, rel_path in tqdm(file_list, desc="Zipping files", unit="file", ncols=80):
+            # filter out files based on ignore patterns
             if not should_ignore(rel_path, patterns):
                 zipf.write(full_path, rel_path)
                 added += 1
 
-    # Usar tqdm.write para evitar conflictos con la barra
+    # log a summary and save the name of the generated zip for further use
     tqdm.write(f"Zipped {added} files into {ZIP_NAME}")
     logger.success(f"Archive ready: {ZIP_NAME}")
 
-    # Guardar el nombre del zip
+    # save the name of the last generated zip archive to a hidden file
     with open(".last_zipignore", "w") as f:
         f.write(ZIP_NAME)
 
@@ -95,6 +103,7 @@ def zip_project(base_folder="."):
 
 
 if __name__ == "__main__":
+    # Run the zipping process and catch unexpected errors with traceback
     try:
         zip_project()
     except Exception as e:
