@@ -31,8 +31,7 @@ __pycache__/
 env/
 venv/
 
-.venv
-.venv*
+
 
 # ── NodeJS packages
 node_modules/

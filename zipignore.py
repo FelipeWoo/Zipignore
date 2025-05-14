@@ -42,10 +42,17 @@ def load_ignore_patterns():
 
 
 def should_ignore(path: str, patterns: set) -> bool:
-    return any(
-        fnmatch(path, pattern) or any(fnmatch(part, pattern) for part in Path(path).parts)
-        for pattern in patterns
-    )
+    path_parts = Path(path).parts  # divide the path
+    for pattern in patterns:
+        if fnmatch(path, pattern):
+            return True
+        # compares part with pattern
+        if any(fnmatch(part, pattern) for part in path_parts):
+            return True
+        # if path begins or ends with /
+        if pattern.endswith("/") and str(Path(path)).startswith(pattern.rstrip("/")):
+            return True
+    return False
 
 
 
