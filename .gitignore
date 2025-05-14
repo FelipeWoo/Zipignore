@@ -1,10 +1,37 @@
-# Python-generated files
+# Python bytecode
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+*.py[cod]
+*.pyo
+*.pyd
 
 # Virtual environments
-.venv
+.venv/
+env/
+venv/
+
+# Log and zip files
+*.log
+*.zip
+
+# Coverage and test output
+.coverage
+htmlcov/
+.cache/
+.tox/
+.pytest_cache/
+
+# IDE/editor config
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
