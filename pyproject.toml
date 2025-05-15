@@ -1,14 +1,31 @@
 [project]
 name = "zipignore"
 version = "0.1.0"
-description = "Add your description here"
+description = "CLI tool to zip projects excluding patterns (like .gitignore)"
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+  { name = "Felipe Woo", email = "felipe.becerra.woo@gmail.com" }
+]
 dependencies = [
     "loguru>=0.7.3",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
+    "setuptools>=80.6.0",
     "tqdm>=4.67.1",
 ]
+
+[project.scripts]
+zipignore = "zipignore.cli:main"
+
+[build-system]
+requires = ["setuptools>=60"]
+build-backend = "setuptools.build_meta"
+
 [tool.coverage.run]
 omit = ["logger.py"]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=zipignore --cov-report=term"
+testpaths = ["tests"]

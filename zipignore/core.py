@@ -107,9 +107,3 @@ def zip_project(base_folder="."):
 
 
 
-if __name__ == "__main__":
-    # Run the zipping process and catch unexpected errors with traceback
-    try:
-        zip_project()
-    except Exception as e:
-        logger.exception("An unexpected error occurred.")

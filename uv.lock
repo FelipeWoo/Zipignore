@@ -119,6 +119,15 @@ wheels = [
 ]
 
 [[package]]
+name = "setuptools"
+version = "80.6.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bb/c6/4af6938e3c7321dab335c384d2ce4f604adc81099f124257de71599e301b/setuptools-80.6.0.tar.gz", hash = "sha256:79cf4c44dfd0b5fb890be2dccc3fbd405253ce3baedd2700b54880a75219ea25", size = 1319406 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/28/46ef5c181f4aa677d0d773da770a8c111e29f21ad67ed1d1b8e414d3fa0b/setuptools-80.6.0-py3-none-any.whl", hash = "sha256:3f6586e9196c76f59857319fdca6571efd156a4b57d6069fd774145c4b5655a2", size = 1201126 },
+]
+
+[[package]]
 name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
@@ -147,6 +156,7 @@ dependencies = [
     { name = "loguru" },
     { name = "pytest" },
     { name = "pytest-cov" },
+    { name = "setuptools" },
     { name = "tqdm" },
 ]
 
@@ -155,5 +165,6 @@ requires-dist = [
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
+    { name = "setuptools", specifier = ">=80.6.0" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
