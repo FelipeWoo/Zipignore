@@ -15,7 +15,7 @@ LOG_FORMAT = (
 )
 
 
-def setup_loguru(level: str = "DEBUG"):
+def setup_loguru(level: str = "DEBUG", log_file: str = "logs/zipignore_operation.log") -> None:
     """
     Configures loguru with:
     - Console output
@@ -29,7 +29,7 @@ def setup_loguru(level: str = "DEBUG"):
     logger.add(sys.stdout, level=level, colorize=True, format=LOG_FORMAT)
 
     # Salida en archivo rotativo
-    logger.add("logs/operation.log", rotation="1 week", retention="1 month", level="INFO", format=LOG_FORMAT)
+    logger.add(log_file, rotation="1 week", retention="1 month", level=level, format=LOG_FORMAT)
 
     # Redirigir logs estándar a loguru
     class InterceptHandler(logging.Handler):
