@@ -14,20 +14,23 @@ def sanitize_filename(filename: str) -> str:
     logger.debug("Sanitizing and converting to lower case ...")
     # make all characters lowercase
     filename = filename.lower()
+    filename = filename.replace(" ", "_")
     # replace invalid symbols whit "_" for cross-platform compatibility
     return re.sub(r'[\\/*?:"<>|]', "_", filename)
 
 def get_default_zip_name(base_folder="."):
     # generate a sanitized and timestamped zip filename based on the current folder name
     logger.debug("Preparing the file name ...")
-    folder_name = Path(base_folder).resolve().name
-    folder_name = sanitize_filename(folder_name)
+
+    normalized_path = Path(base_folder.replace("\\", "/")).resolve()
+    folder_name = sanitize_filename(normalized_path.name)
+
     date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     return f"{folder_name}_{date_str}.zip"
 
 
 IGNORE_FILE = ".zipignore"
-ZIP_NAME = get_default_zip_name()
+
 
 def load_ignore_patterns():
     # load ignore patterns from .zipignore, removing inline and full-line comments
@@ -65,6 +68,8 @@ def should_ignore(path: str, patterns: set) -> bool:
 def zip_project(base_folder="."):
     
     logger.info("Preparing to zip files ...")
+
+    zip_name = get_default_zip_name()
     patterns = load_ignore_patterns()
 
     # collect all files in base_folder recursively (before filtering)
@@ -83,7 +88,7 @@ def zip_project(base_folder="."):
     added = 0
     tqdm.write(f"Total files to check before filtering: {total_files}")
 
-    with zipfile.ZipFile(ZIP_NAME, "w", zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as zipf:
         # create a tqdm progress bar for all scanned files
         for full_path, rel_path in tqdm(file_list, desc="Zipping files", unit="file", ncols=80):
             # filter out files based on ignore patterns
@@ -92,12 +97,12 @@ def zip_project(base_folder="."):
                 added += 1
 
     # log a summary and save the name of the generated zip for further use
-    tqdm.write(f"Zipped {added} files into {ZIP_NAME}")
-    logger.success(f"Archive ready: {ZIP_NAME}")
+    tqdm.write(f"Zipped {added} files into {zip_name}")
+    logger.success(f"Archive ready: {zip_name}")
 
     # save the name of the last generated zip archive to a hidden file
     with open(".last_zipignore", "w") as f:
-        f.write(ZIP_NAME)
+        f.write(zip_name)
 
 
 
