@@ -65,14 +65,14 @@ def should_ignore(path: str, patterns: set) -> bool:
 
 
 
-def zip_project(base_folder="."):
-    
+def zip_project(base_folder=".", zip_name=None, dry_run=False):
     logger.info("Preparing to zip files ...")
 
-    zip_name = get_default_zip_name()
+    if zip_name is None:
+        zip_name = get_default_zip_name(base_folder)
+
     patterns = load_ignore_patterns()
 
-    # collect all files in base_folder recursively (before filtering)
     file_list = []
     for root, _, files in os.walk(base_folder):
         for file in files:
@@ -88,21 +88,25 @@ def zip_project(base_folder="."):
     added = 0
     tqdm.write(f"Total files to check before filtering: {total_files}")
 
+    if dry_run:
+        tqdm.write("Dry run mode: these files would be included:")
+        for _, rel_path in file_list:
+            if not should_ignore(rel_path, patterns):
+                print(rel_path)
+        return
+
     with zipfile.ZipFile(zip_name, "w", zipfile.ZIP_DEFLATED) as zipf:
-        # create a tqdm progress bar for all scanned files
         for full_path, rel_path in tqdm(file_list, desc="Zipping files", unit="file", ncols=80):
-            # filter out files based on ignore patterns
             if not should_ignore(rel_path, patterns):
                 zipf.write(full_path, rel_path)
                 added += 1
 
-    # log a summary and save the name of the generated zip for further use
     tqdm.write(f"Zipped {added} files into {zip_name}")
     logger.success(f"Archive ready: {zip_name}")
 
-    # save the name of the last generated zip archive to a hidden file
     with open(".last_zipignore", "w") as f:
         f.write(zip_name)
+
 
 
 
