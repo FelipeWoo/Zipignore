@@ -1,4 +1,4 @@
-from zipignore import should_ignore
+from zipignore.core import should_ignore
 
 def test_should_ignore_basic_patterns():
     patterns = {"__pycache__/", ".env"}  

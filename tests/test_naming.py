@@ -1,4 +1,4 @@
-from zipignore import get_default_zip_name, sanitize_filename
+from zipignore.core import get_default_zip_name, sanitize_filename
 import re
 import pytest
 

@@ -1,7 +1,7 @@
 import zipfile
 import os
 from pathlib import Path
-from zipignore import zip_project, get_default_zip_name
+from zipignore.core import zip_project, get_default_zip_name
 
 def test_zip_creation(tmp_path):
     # 🧪 Create fake project directory inside tmp_path
