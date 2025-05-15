@@ -26,7 +26,7 @@ uv add git+https://github.com/FelipeWoo/Zipignore.git
 ### Option 2: Clone and install locally in editable mode
 
 ```bash
-git clone https://github.com/your-username/zipignore.git
+git clone https://github.com/FelipeWoo/Zipignore.git
 cd zipignore
 pip install -e .
 ```
