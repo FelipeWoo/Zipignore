@@ -49,6 +49,40 @@ By default, it will:
 
 ---
 
+## Troubleshooting: zipignore not found
+
+If you installed `zipignore` in a virtual environment (e.g., using `uv` or `pip install -e .`) and the command is not recognized, make sure your environment is activated.
+
+### Solution
+
+Activate your environment before using the CLI:
+
+```bash
+source .venv/bin/activate
+```
+
+Once activated, you can run:
+
+```bash
+zipignore --help
+```
+
+If you're still having issues, you can execute it directly from the environment's `bin` directory:
+
+```bash
+.venv/bin/zipignore
+```
+
+To make it permanent, you can also add an alias to your shell configuration:
+
+```bash
+alias zipignore="$PWD/.venv/bin/zipignore"
+```
+
+And add that line to your `~/.bashrc` or `~/.zshrc`.
+
+---
+
 ## Example `.zipignore`
 
 ```txt
