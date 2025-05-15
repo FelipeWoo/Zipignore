@@ -20,7 +20,7 @@
 ### Option 1: Install from GitHub using `uv`
 
 ```bash
-uv add git+https://github.com/your-username/zipignore.git
+uv add git+https://github.com/FelipeWoo/Zipignore.git
 ````
 
 ### Option 2: Clone and install locally in editable mode
