@@ -1,4 +1,4 @@
-from logger import setup_loguru, logger
+from zipignore.logger import setup_loguru, logger
 setup_loguru("DEBUG")
 
 import zipfile
